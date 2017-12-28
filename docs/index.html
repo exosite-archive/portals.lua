@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>portals.lua 1.0.0</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>portals.lua 1.0.0</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><strong>portals</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>portals</code></h1>
+<p>Portals service support functions.</p>
+<p> Please refer to the <a href="https://github.com/exosite/portals.lua">GitHub</a> repo
+ for an integration example.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#filterDataListByDataSources">filterDataListByDataSources (dataList, dataSource)</a></td>
+	<td class="summary">Filter data list by a data source
+ This is a helper function to work on the semantic level instead of working on
+ the lower level</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#filterDataSourcesByDevice">filterDataSourcesByDevice (dataSources, device)</a></td>
+	<td class="summary">Filter data sources by a device
+ This is a helper function used in the scenario when all devices and data
+ sources are fetched and cached at once and we need to find data sources
+ associated with a device</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDataFromDataSources">getDataFromDataSources (token, dataSources, options)</a></td>
+	<td class="summary">Get data associated by the data sources
+ The token, data sources and options are used together to find all data
+ associated with the data sources.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDataSources">getDataSources (token, devices)</a></td>
+	<td class="summary">Get data sources associated by the devices
+ The token and the devices are used together to find all data sources
+ associated with the devices.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getDevices">getDevices (token)</a></td>
+	<td class="summary">Get user devices
+ The token is used to query all device, portal and group permissions, then it
+ follows group permissions to find more device and portal permissions, then
+ follow all the portal permissions to find all device permissions from here,
+ all device permissions are turned into devices</p>
+
+<p> There is currently limitation in the implementation preventing a user from
+ successfully getting results back when there are more than 198 devices.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getUserToken">getUserToken (auth)</a></td>
+	<td class="summary">Get user token with email and password
+ The email and the password is used together to get a token</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "filterDataListByDataSources"></a>
+    <strong>filterDataListByDataSources (dataList, dataSource)</strong>
+    </dt>
+    <dd>
+    Filter data list by a data source
+ This is a helper function to work on the semantic level instead of working on
+ the lower level
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dataList</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of data returned by <a href="index.html#getDataFromDataSources">getDataFromDataSources</a>
+        </li>
+        <li><span class="parameter">dataSource</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         a single data source from the list returned by <a href="index.html#getDataSources">getDataSources</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        data filtered data
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "filterDataSourcesByDevice"></a>
+    <strong>filterDataSourcesByDevice (dataSources, device)</strong>
+    </dt>
+    <dd>
+    Filter data sources by a device
+ This is a helper function used in the scenario when all devices and data
+ sources are fetched and cached at once and we need to find data sources
+ associated with a device
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dataSources</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of dataSources returned by <a href="index.html#getDataSources">getDataSources</a>
+        </li>
+        <li><span class="parameter">device</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         a single devices from the list returned by <a href="index.html#getDevices">getDevices</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        dataSources filtered dataSources
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getDataFromDataSources"></a>
+    <strong>getDataFromDataSources (token, dataSources, options)</strong>
+    </dt>
+    <dd>
+    Get data associated by the data sources
+ The token, data sources and options are used together to find all data
+ associated with the data sources. </p>
+
+<p> There is currently limitation in the implementation preventing a user from
+ successfully getting results back when there are more than 198 data sources.
+ This will be addressed in the next release.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">token</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a token returned by <a href="index.html#getUserToken">getUserToken</a>
+        </li>
+        <li><span class="parameter">dataSources</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of dataSources returned by <a href="index.html#getDataSources">getDataSources</a>
+        </li>
+        <li><span class="parameter">options</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         options to select the data set see <a href="http://docs.exosite.com/portals/portalsapi/#get-data-from-multiple-data-sources">Get data from
+ multiple data
+ sources</a>
+ for all options
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of data indexed by data source rids see <a href="http://docs.exosite.com/portals/portalsapi/#get-data-from-multiple-data-sources">Get data from
+ multiple data
+ sources</a>
+ for its data structure
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getDataSources"></a>
+    <strong>getDataSources (token, devices)</strong>
+    </dt>
+    <dd>
+    Get data sources associated by the devices
+ The token and the devices are used together to find all data sources
+ associated with the devices. </p>
+
+<p> There is currently limitation in the implementation preventing a user from
+ successfully getting results back when there are more than 198 devices and/or 198 groups the token has access to
+ This will be addressed in the next release.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">token</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a token returned by <a href="index.html#getUserToken">getUserToken</a>
+        </li>
+        <li><span class="parameter">devices</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of devices returned by <a href="index.html#getDevices">getDevices</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of data sources which can be used by other functions see
+ <a href="http://docs.exosite.com/portals/portalsapi/#get-multiple-data-sources">Get multiple data
+ sources</a>
+ for its data structure
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getDevices"></a>
+    <strong>getDevices (token)</strong>
+    </dt>
+    <dd>
+    Get user devices
+ The token is used to query all device, portal and group permissions, then it
+ follows group permissions to find more device and portal permissions, then
+ follow all the portal permissions to find all device permissions from here,
+ all device permissions are turned into devices</p>
+
+<p> There is currently limitation in the implementation preventing a user from
+ successfully getting results back when there are more than 198 devices.
+ This will be addressed in the next release.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">token</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         a token returned by <a href="index.html#getUserToken">getUserToken</a>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         list of devices which can be used by other functions see <a href="http://docs.exosite.com/portals/portalsapi/#get-multiple-devices">Get
+ multiple
+ devices</a>
+ for its data structure
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getUserToken"></a>
+    <strong>getUserToken (auth)</strong>
+    </dt>
+    <dd>
+    Get user token with email and password
+ The email and the password is used together to get a token
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">auth</span> authentication info
+        <ul>
+        <li><span class="parameter">email</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         authentication email
+        </li>
+        <li><span class="parameter">password</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         authentication password
+        </li>
+        </li></ul>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        token which can be used by other functions
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2018-01-03 07:26:20 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

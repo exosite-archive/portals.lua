@@ -1,0 +1,6 @@
+dir = 'docs'
+file = 'portals.lua'
+format = 'markdown'
+full_description = 'The documentation is available'
+project = 'portals.lua 1.0.0'
+title = 'portals.lua 1.0.0'
