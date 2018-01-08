@@ -1,5 +1,9 @@
 # portals.lua
 
+## Installation
+
+Paste [portals.lua](./portals.lua) to be a module. Please see [Modules docs](http://docs.exosite.com/articles/working-with-apis/#modules) for detail.
+
 ## API Reference
 
 Please see [portals.lua 1.0.0](https://exosite.github.io/portals.lua/)
