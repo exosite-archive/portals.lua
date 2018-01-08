@@ -2,7 +2,7 @@
 
 ## Installation
 
-Paste [portals.lua](./portals.lua) to be a module. Please see [Modules docs](http://docs.exosite.com/articles/working-with-apis/#modules) for detail.
+Copy [portals.lua](./portals.lua) to the modules folder in your solution as a lua module. You can then require this module in your solution code to use the functions provided by it. For more information on how the modules work, please refer to [Module's docs](http://docs.exosite.com/articles/working-with-apis/#modules).
 
 ## API Reference
 
