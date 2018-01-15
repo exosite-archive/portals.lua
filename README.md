@@ -24,6 +24,11 @@ Please see [portals.lua 1.0.0](https://exosite.github.io/portals.lua/)
 --#ENDPOINT POST /portals
 local portals = require "portals"
 
+--Make the library talk to the Portals service, you can change this to other
+--services with the same API, but if you are talking to the portals service,
+--this line is redundant, feel free to delete
+portals.setService(Portals)
+
 --Get user token based on email and password in the request body. If any error
 --occur, this script exits with the error info.
 --
