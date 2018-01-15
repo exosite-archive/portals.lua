@@ -54,6 +54,10 @@ local function getAliasedRids(aliases)
 end
 
 local function getDataFromMultipleDataSources(token, dataSourceRids, options)
+    --Portals doesn't handle /[] URL gracefully
+    if #dataSourceRids == 0 then
+        return {}
+    end
     local params = copyTable({
         dataSourceRids = '['..table.concat(dataSourceRids, ',')..']',
         token = token
@@ -68,6 +72,10 @@ local function getDataFromMultipleDataSources(token, dataSourceRids, options)
 end
 
 local function getMultipleDataSources(token, dataSourceRids)
+    --Portals doesn't handle /[] URL gracefully
+    if #dataSourceRids == 0 then
+        return {}
+    end
     local dataSources = di.service.getMultipleDataSources({
         dataSourceRids = '['..table.concat(dataSourceRids, ',')..']',
         token = token
@@ -81,6 +89,10 @@ local function getMultipleDataSources(token, dataSourceRids)
 end
 
 local function getMultipleDevices(token, deviceRids)
+    --Portals doesn't handle /[] URL gracefully
+    if #deviceRids == 0 then
+        return {}
+    end
     local devices = di.service.getMultipleDevices({
         deviceRids = '['..table.concat(deviceRids, ',')..']',
         token = token
@@ -95,6 +107,10 @@ end
 
 --Assume permissions are http://docs.exosite.com/portals/portalsapi/#permission-object
 local function getMultipleGroups(token, groupIds)
+    --Portals doesn't handle /[] URL gracefully
+    if #groupIds == 0 then
+        return {}
+    end
     local permissions = di.service.getMultipleGroups({
         groupIds = '['..table.concat(groupIds, ',')..']',
         token = token
