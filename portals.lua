@@ -2,6 +2,9 @@
 -- Please refer to the [GitHub](https://github.com/exosite/portals.lua) repo
 -- for an integration example.
 -- @module portals
+local di = {
+    service = Portals
+}
 local portals = {}
 
 local function copyTable(dest, source)
@@ -51,11 +54,15 @@ local function getAliasedRids(aliases)
 end
 
 local function getDataFromMultipleDataSources(token, dataSourceRids, options)
+    --Portals doesn't handle /[] URL gracefully
+    if #dataSourceRids == 0 then
+        return {}
+    end
     local params = copyTable({
         dataSourceRids = '['..table.concat(dataSourceRids, ',')..']',
         token = token
     }, options)
-    local dataList = Portals.getDataFromMultipleDataSources(params)
+    local dataList = di.service.getDataFromMultipleDataSources(params)
     if dataList.error ~= nil then
         local message
         message = 'Failed getDataFromMultipleDataSources'
@@ -65,7 +72,11 @@ local function getDataFromMultipleDataSources(token, dataSourceRids, options)
 end
 
 local function getMultipleDataSources(token, dataSourceRids)
-    local dataSources = Portals.getMultipleDataSources({
+    --Portals doesn't handle /[] URL gracefully
+    if #dataSourceRids == 0 then
+        return {}
+    end
+    local dataSources = di.service.getMultipleDataSources({
         dataSourceRids = '['..table.concat(dataSourceRids, ',')..']',
         token = token
     })
@@ -78,7 +89,11 @@ local function getMultipleDataSources(token, dataSourceRids)
 end
 
 local function getMultipleDevices(token, deviceRids)
-    local devices = Portals.getMultipleDevices({
+    --Portals doesn't handle /[] URL gracefully
+    if #deviceRids == 0 then
+        return {}
+    end
+    local devices = di.service.getMultipleDevices({
         deviceRids = '['..table.concat(deviceRids, ',')..']',
         token = token
     })
@@ -92,7 +107,11 @@ end
 
 --Assume permissions are http://docs.exosite.com/portals/portalsapi/#permission-object
 local function getMultipleGroups(token, groupIds)
-    local permissions = Portals.getMultipleGroups({
+    --Portals doesn't handle /[] URL gracefully
+    if #groupIds == 0 then
+        return {}
+    end
+    local permissions = di.service.getMultipleGroups({
         groupIds = '['..table.concat(groupIds, ',')..']',
         token = token
     })
@@ -104,7 +123,7 @@ local function getMultipleGroups(token, groupIds)
 end
 
 local function getUserPermissions(token)
-    local permissions = Portals.getUserPermissions({ token = token })
+    local permissions = di.service.getUserPermissions({ token = token })
     if permissions.error ~= nil then
         local message = 'Failed getUserPermissions'
         return { message = message, error = permissions }
@@ -137,7 +156,7 @@ end
 
 --Assume permissions are http://docs.exosite.com/portals/portalsapi/#permission-object
 local function listPortalDevices(token, portalId)
-    local devices = Portals.listPortalDevices({
+    local devices = di.service.listPortalDevices({
         portalId = portalId,
         token = token
     })
@@ -387,7 +406,7 @@ end
 -- @tparam string auth.password authentication password
 -- @treturn string token which can be used by other functions
 function portals.getUserToken(auth)
-    local token = Portals.getUserToken(auth)
+    local token = di.service.getUserToken(auth)
     if token.error ~= nil then
         local message
         if token.status == 403 then
@@ -400,6 +419,14 @@ function portals.getUserToken(auth)
         return { message = message, error = token }
     end
     return token
+end
+
+--- Set service
+-- Set the service this library works with
+-- @tparam string service service instance
+-- @treturn string token which can be used by other functions
+function portals.setService(service)
+    di.service = service
 end
 
 return portals
